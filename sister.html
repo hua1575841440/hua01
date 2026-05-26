@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>🌸 祝姐姐六一快乐 · 永远是我的少女 🌸</title>
+    <!-- canvas-confetti 彩带库 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <!-- 可爱字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Fredoka+One&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', 'Segoe UI', 'Comic Neue', cursive, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #e8f0ff 0%, #ffe6f0 50%, #ffecf5 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            position: relative;
+            cursor: default;
+        }
+
+        /* 漂浮元素：星星、糖果、小花 */
+        .floating-joy {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .float-item {
+            position: absolute;
+            font-size: 1.6rem;
+            opacity: 0.5;
+            animation: floatGentle 16s infinite ease-in-out;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            pointer-events: none;
+        }
+
+        @keyframes floatGentle {
+            0% { transform: translateY(0px) rotate(0deg); }
+            40% { transform: translateY(-30px) rotate(5deg); }
+            80% { transform: translateY(-15px) rotate(-3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .float-item.slow { animation-duration: 22s; }
+        .float-item.fast { animation-duration: 12s; }
+
+        /* 主卡片 柔和梦境质感 */
+        .sister-card {
+            position: relative;
+            z-index: 20;
+            max-width: 880px;
+            width: 90%;
+            margin: 40px auto;
+            background: rgba(255, 252, 250, 0.85);
+            backdrop-filter: blur(18px);
+            border-radius: 88px 48px 88px 48px;
+            box-shadow: 0 30px 50px rgba(150, 100, 120, 0.2), 0 0 0 2px rgba(255, 220, 240, 0.8) inset;
+            padding: 2rem 2rem 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: cardFloatIn 0.6s ease-out;
+        }
+
+        @keyframes cardFloatIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* 标题区域 */
+        .to-sister {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #9f5e7c;
+            background: #fff0f5aa;
+            display: inline-block;
+            padding: 5px 26px;
+            border-radius: 60px;
+            margin-bottom: 12px;
+        }
+
+        .main-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #8e6b9b, #f4a2b0, #ffc785);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 12px #ffbfd5;
+            margin: 8px 0;
+        }
+
+        .sister-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #c26587;
+            background: rgba(255, 255, 245, 0.6);
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+        }
+
+        .bless-message {
+            background: rgba(255, 245, 250, 0.9);
+            border-radius: 56px;
+            padding: 18px 20px;
+            margin: 15px 0 15px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #905a74;
+            font-weight: 600;
+            text-align: center;
+            border-left: 8px solid #f5a3bb;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+        }
+
+        /* 图片轮播区 (姐姐的回忆相册) */
+        .photo-carousel {
+            margin: 20px 0 22px;
+            border-radius: 56px;
+            background: rgba(255, 240, 245, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 16px 12px;
+        }
+
+        .carousel-label {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #bc6f8c;
+            background: #fff0e0aa;
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            border-radius: 48px;
+            overflow: hidden;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+            background: #ffeef4;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .slide {
+            flex: 0 0 100%;
+            aspect-ratio: 16 / 9;
+            background: #f7dfea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 40px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 215, 225, 0.85);
+            backdrop-filter: blur(8px);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #a85c78;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .slider-btn:hover { background: #ffbfd0; transform: translateY(-50%) scale(1.05);}
+        .btn-prev { left: 12px; }
+        .btn-next { right: 12px; }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #e2a1bc;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.2s;
+        }
+        .dot.active {
+            background-color: #ff6f91;
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* 互动区：可爱按钮 */
+        .action-group {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0 16px;
+        }
+        .btn-sister {
+            border: none;
+            background: linear-gradient(115deg, #ff9eb5, #ff7a9e);
+            padding: 12px 26px;
+            border-radius: 50px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 16px rgba(150, 70, 90, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-sister:hover {
+            transform: translateY(-4px);
+            filter: brightness(1.02);
+            box-shadow: 0 15px 22px rgba(150, 70, 90, 0.35);
+        }
+        .btn-soft {
+            background: linear-gradient(115deg, #b3a0d4, #d9a7c7);
+        }
+
+        /* 手写信风格区域 */
+        .handwritten {
+            background: #fffaf3e6;
+            border-radius: 56px;
+            padding: 24px 22px;
+            margin: 22px 0 20px;
+            text-align: left;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            color: #914b69;
+            border: 1px solid #ffcddf;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+        }
+        .handwritten p {
+            margin: 10px 0;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+        .handwritten .sign {
+            text-align: right;
+            margin-top: 16px;
+            font-size: 1.3rem;
+            color: #c06786;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #b2738f;
+            background: rgba(255, 240, 245, 0.7);
+            border-radius: 40px;
+            padding: 8px 20px;
+            display: inline-block;
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #fff6e8;
+            color: #dc6d92;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            z-index: 200;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            white-space: nowrap;
+        }
+        .toast-message.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        @media (max-width: 550px) {
+            .sister-card { padding: 1.5rem 1.2rem 2rem; }
+            .main-title { font-size: 2rem; }
+            .to-sister { font-size: 1.6rem; }
+            .sister-name { font-size: 1.4rem; }
+            .btn-sister { padding: 8px 18px; font-size: 0.85rem; }
+            .slider-btn { width: 36px; height: 36px; font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="floating-joy" id="floatingWorld"></div>
+
+<div class="sister-card">
+    <div class="to-sister">💌 致我最亲爱的姐姐 💌</div>
+    <div class="main-title">🍭 六一儿童节快乐 🍭</div>
+    <div class="sister-name">✨ 姐姐 · 永远是我的少女 ✨</div>
+
+    <!-- 温情祝福语 -->
+    <div class="bless-message">
+        🌸 亲爱的姐姐，六一快乐！<br>
+        虽然你已经长大，但在我心里你永远是那个会保护我、陪我笑的少女。<br>
+        愿你今天像孩子一样无忧无虑，吃甜甜的糖，做最可爱的梦。💖
+    </div>
+
+    <!-- 轮播相册区（可换成姐姐的照片） -->
+    <div class="photo-carousel">
+        <div class="carousel-label">📸 姐姐的专属回忆 · 时光放映机 📸</div>
+        <div class="slider-wrapper">
+            <div class="slider" id="sisterSlider"></div>
+            <button class="slider-btn btn-prev" id="prevSlideBtn">‹</button>
+            <button class="slider-btn btn-next" id="nextSlideBtn">›</button>
+        </div>
+        <div class="dots" id="dotContainer"></div>
+        <div style="font-size: 0.7rem; margin-top: 8px; color:#b27792;">❤️ 姐姐，把这些美好的瞬间都收藏起来吧 ❤️</div>
+    </div>
+
+    <!-- 互动按钮 给足情绪价值 -->
+    <div class="action-group">
+        <button class="btn-sister" id="warmMsgBtn">🍬 想对姐姐说的话 🍬</button>
+        <button class="btn-sister btn-soft" id="flowerRainBtn">🌸 下一场花瓣雨 🌸</button>
+        <button class="btn-sister" id="candyCelebrateBtn">🎁 糖果彩虹礼花 🎁</button>
+    </div>
+
+    <!-- 手写信风格专区 -->
+    <div class="handwritten">
+        <p>💕 给最棒的姐姐：</p>
+        <p>  小时候你牵着我的手，给我买糖、替我遮风挡雨；现在换我来宠你，让你永远做开心的小朋友。<br>
+          姐姐，你要记住，无论多少岁，你都是那个值得被全世界偏爱的女孩。<br>
+          六一儿童节，愿你卸下所有烦恼，像个孩子一样大笑，吃甜甜的冰淇淋，收到满满的惊喜！<br>
+          你永远是我心中最温柔、最可爱的姐姐。💗</p>
+        <div class="sign">—— 永远爱你的弟弟 ✨</div>
+    </div>
+
+    <div class="footer-note">
+        🎀 愿姐姐童心未泯，所遇皆甜 🎀
+    </div>
+</div>
+
+<div id="toastMsg" class="toast-message">🌸 姐姐，六一快乐 🌸</div>
+
+<script>
+    (function() {
+        // ========== 1. 漂浮可爱元素 ==========
+        const floatIcons = ['🌸', '🌼', '🍬', '🍭', '🎈', '💗', '✨', '🌟', '🦋', '🐰', '🎀', '💖', '🍰', '☁️'];
+        const floatContainer = document.getElementById('floatingWorld');
+        for (let i = 0; i < 52; i++) {
+            const item = document.createElement('div');
+            item.classList.add('float-item');
+            item.textContent = floatIcons[Math.floor(Math.random() * floatIcons.length)];
+            const size = 1.2 + Math.random() * 2.5;
+            item.style.fontSize = size + 'rem';
+            item.style.left = Math.random() * 98 + '%';
+            item.style.top = Math.random() * 95 + '%';
+            const speed = Math.random() > 0.6 ? 'fast' : (Math.random() > 0.5 ? 'slow' : '');
+            if (speed) item.classList.add(speed);
+            item.style.animationDelay = Math.random() * 12 + 's';
+            item.style.opacity = 0.5 + Math.random() * 0.35;
+            floatContainer.appendChild(item);
+        }
+
+        // ========== 2. 图片轮播 可自定义（可替换成姐姐的照片）==========
+        // 在这里换上你姐姐的相册图片链接，表达你的心意
+        const imageArray = [
+            "https://picsum.photos/id/20/800/450",   // 温馨场景示例 -> 可替换
+            "https://picsum.photos/id/96/800/450",   // 风景示例 -> 可替换
+            "https://picsum.photos/id/169/800/450",  // 替换为姐姐照片1
+            "https://picsum.photos/id/26/800/450",   // 替换为姐姐照片2
+            "https://picsum.photos/id/42/800/450"    // 替换为姐姐照片3
+        ];
+        // 建议将上面链接换成你姐姐真实的照片链接（上传到图床），给她惊喜！
+
+        let currentIdx = 0;
+        let autoTimer;
+        const sliderDiv = document.getElementById('sisterSlider');
+        const dotsDiv = document.getElementById('dotContainer');
+        const prevBtn = document.getElementById('prevSlideBtn');
+        const nextBtn = document.getElementById('nextSlideBtn');
+
+        function renderSlider() {
+            sliderDiv.innerHTML = '';
+            imageArray.forEach((src, i) => {
+                const slide = document.createElement('div');
+                slide.classList.add('slide');
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `姐姐的回忆${i+1}`;
+                slide.appendChild(img);
+                sliderDiv.appendChild(slide);
+            });
+            dotsDiv.innerHTML = '';
+            imageArray.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (idx === currentIdx) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(idx));
+                dotsDiv.appendChild(dot);
+            });
+            updateTransform();
+        }
+
+        function updateTransform() {
+            sliderDiv.style.transform = `translateX(-${currentIdx * 100}%)`;
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                if (i === currentIdx) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+        }
+
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= imageArray.length) index = imageArray.length - 1;
+            if (index === currentIdx) return;
+            currentIdx = index;
+            updateTransform();
+            resetAutoPlay();
+        }
+
+        function nextSlide() { goToSlide((currentIdx + 1) % imageArray.length); }
+        function prevSlide() { goToSlide((currentIdx - 1 + imageArray.length) % imageArray.length); }
+        function startAutoPlay() { if (autoTimer) clearInterval(autoTimer); if (imageArray.length > 1) autoTimer = setInterval(nextSlide, 4000); }
+        function resetAutoPlay() { if (autoTimer) clearInterval(autoTimer); startAutoPlay(); }
+
+        if (imageArray.length) {
+            renderSlider();
+            startAutoPlay();
+            prevBtn.addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
+            nextBtn.addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
+            // 触摸滑动
+            let startX = 0;
+            const wrap = document.querySelector('.slider-wrapper');
+            wrap.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].screenX; });
+            wrap.addEventListener('touchend', (e) => {
+                const diff = e.changedTouches[0].screenX - startX;
+                if (Math.abs(diff) > 45) {
+                    if (diff > 0) prevSlide();
+                    else nextSlide();
+                    resetAutoPlay();
+                }
+            });
+        } else {
+            sliderDiv.innerHTML = '<div class="slide" style="justify-content:center; align-items:center;">💕 姐姐，添加我们的回忆照片吧 💕</div>';
+        }
+
+        // ========== 3. 互动特效 + 情绪价值 ==========
+        const toast = document.getElementById('toastMsg');
+        let toastTimeout = null;
+        function showToast(msg, duration = 2200) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        // 花瓣雨/礼花组合
+        function petalRain() {
+            canvasConfetti({ particleCount: 180, spread: 85, origin: { y: 0.6 }, startVelocity: 20, colors: ['#FFB7C5', '#FFC8DD', '#FBC8B5', '#FFDAB9', '#E2F0CB'], shapes: ['circle'] });
+            canvasConfetti({ particleCount: 120, angle: 70, spread: 60, origin: { x: 0.1, y: 0.7 }, startVelocity: 22, colors: ['#FF9AA2', '#FFB347'] });
+            canvasConfetti({ particleCount: 120, angle: 110, spread: 60, origin: { x: 0.9, y: 0.7 }, startVelocity: 22, colors: ['#FFB7B2', '#FADADD'] });
+            setTimeout(() => {
+                canvasConfetti({ particleCount: 280, spread: 100, origin: { y: 0.5 }, startVelocity: 16, colors: ['#ffafcc', '#ffc8dd', '#ffe5b4', '#bde0fe'] });
+            }, 180);
+            showToast("🌸 漫天花雨，姐姐今天是小仙女 🌸", 2400);
+        }
+
+        function candyCelebration() {
+            canvasConfetti({ particleCount: 220, spread: 95, origin: { y: 0.6 }, startVelocity: 21, colors: ['#FFD966', '#FFB347', '#FF6F91', '#C77DFF'] });
+            canvasConfetti({ particleCount: 100, spread: 70, origin: { x: 0.2, y: 0.7 }, startVelocity: 18 });
+            canvasConfetti({ particleCount: 100, spread: 70, origin: { x: 0.8, y: 0.7 }, startVelocity: 18 });
+            showToast("🍬✨ 给姐姐的糖果彩虹雨，甜度满分 ✨🍭", 2300);
+        }
+
+        // 温馨语录库
+        const sisterMessages = [
+            "💗 姐姐，你是我生命里最温暖的光，六一快乐！",
+            "🌸 愿我的姐姐永远像孩子一样被宠爱，每一天都甜滋滋～",
+            "🍭 亲爱的姐姐，不管几岁，你都是我们家最可爱的小公主！",
+            "✨ 姐姐，谢谢你一直照顾我，现在换我守护你的少女心。",
+            "🎀 六一儿童节，愿姐姐的笑容比糖果还要甜～",
+            "💖 在这个特别的日子，想对姐姐说：你永远值得所有的美好。",
+            "🌟 姐姐要永远开心，做那个无忧无虑、被爱包围的女孩。",
+            "🍬 我的超人姐姐，今天请放下一切烦恼，做个快乐的小朋友吧！"
+        ];
+        function showWarmMessage() {
+            const msg = sisterMessages[Math.floor(Math.random() * sisterMessages.length)];
+            showToast(msg, 2700);
+            // 在小礼花配合
+            canvasConfetti({ particleCount: 55, spread: 50, origin: { y: 0.8 }, colors: ['#FFB7C5', '#FFC8DD', '#FFDAB9'], startVelocity: 10 });
+            // 同时在手写信区域闪现一句温馨
+            const letterDiv = document.querySelector('.handwritten');
+            const flash = document.createElement('p');
+            flash.style.background = "#ffecf0";
+            flash.style.borderRadius = "32px";
+            flash.style.padding = "6px 12px";
+            flash.style.margin = "8px 0";
+            flash.style.fontSize = "1rem";
+            flash.style.fontFamily = "'Quicksand', sans-serif";
+            flash.style.animation = "fadeInOut 2s";
+            flash.innerHTML = `✨ 姐姐专属：${msg.slice(0, 42)} ✨`;
+            letterDiv.appendChild(flash);
+            setTimeout(() => flash.remove(), 2400);
+        }
+
+        // 绑定按钮
+        document.getElementById('warmMsgBtn').addEventListener('click', showWarmMessage);
+        document.getElementById('flowerRainBtn').addEventListener('click', petalRain);
+        document.getElementById('candyCelebrateBtn').addEventListener('click', candyCelebration);
+
+        // 额外：点击卡片任意处飘一点小心心（不干扰按钮）
+        const card = document.querySelector('.sister-card');
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-sister') || e.target.closest('.slider-btn') || e.target.closest('.dot')) return;
+            canvasConfetti({ particleCount: 18, spread: 35, origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }, colors: ['#ff9eb5', '#ffc8dd', '#ffb7c5'] });
+        });
+
+        // 页面加载欢迎特效
+        window.addEventListener('load', () => {
+            canvasConfetti({ particleCount: 80, spread: 55, origin: { y: 0.7 }, startVelocity: 14, colors: ['#ffb7c5', '#ffd9e5', '#ff9eb5'] });
+            setTimeout(() => {
+                canvasConfetti({ particleCount: 60, spread: 45, origin: { x: 0.3, y: 0.6 }, colors: ['#FFC8DD', '#FFB7C5'] });
+                canvasConfetti({ particleCount: 60, spread: 45, origin: { x: 0.7, y: 0.6 }, colors: ['#FFDAB9', '#FFB347'] });
+            }, 300);
+            showToast("💕 姐姐，欢迎来到为你准备的六一乐园 💕", 3200);
+        });
+
+        // 标题微微呼吸
+        const mainTitle = document.querySelector('.main-title');
+        if(mainTitle) {
+            setInterval(() => {
+                mainTitle.style.transform = "scale(1.01)";
+                setTimeout(() => { if(mainTitle) mainTitle.style.transform = ""; }, 300);
+            }, 1900);
+        }
+    })();
+</script>
+</body>
+</html>
