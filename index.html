@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>💖 给九月的专属六一 · 把你宠成小朋友 💖</title>
+    <!-- canvas-confetti 彩带库 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <!-- 可爱字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Fredoka+One&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', 'Segoe UI', 'Comic Neue', cursive, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #ffe6f0 0%, #ffcce0 40%, #ffd9ec 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            position: relative;
+            cursor: default;
+        }
+
+        /* 漂浮爱心 + 小元素 */
+        .floating-love {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .love-obj {
+            position: absolute;
+            font-size: 1.8rem;
+            opacity: 0.6;
+            animation: floatLove 14s infinite ease-in-out;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            pointer-events: none;
+        }
+
+        @keyframes floatLove {
+            0% { transform: translateY(0px) rotate(0deg); }
+            30% { transform: translateY(-25px) rotate(5deg); }
+            70% { transform: translateY(-45px) rotate(-3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .love-obj.slow { animation-duration: 18s; }
+        .love-obj.fast { animation-duration: 10s; }
+
+        /* 主卡片 柔软梦境质感 */
+        .love-card {
+            position: relative;
+            z-index: 20;
+            max-width: 880px;
+            width: 90%;
+            margin: 35px auto;
+            background: rgba(255, 250, 252, 0.85);
+            backdrop-filter: blur(16px);
+            border-radius: 88px 48px 88px 48px;
+            box-shadow: 0 30px 50px rgba(255, 80, 120, 0.25), 0 0 0 2px rgba(255, 220, 240, 0.9) inset;
+            padding: 2rem 2rem 2.8rem;
+            text-align: center;
+            transition: all 0.3s;
+            animation: cardRise 0.6s ease-out;
+        }
+
+        @keyframes cardRise {
+            0% { opacity: 0; transform: scale(0.95) translateY(30px);}
+            100% { opacity: 1; transform: scale(1) translateY(0);}
+        }
+
+        /* 特别给九月的标题 */
+        .to-sept {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.4rem;
+            color: #d45c7a;
+            background: #fff0f5aa;
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 60px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        .main-love-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #FF6F91, #FFB347, #FF8EAB);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 12px #ffb0c3;
+            margin: 8px 0;
+            letter-spacing: 2px;
+        }
+
+        .heartbeat {
+            animation: heartBeat 1.2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.12); text-shadow: 0 0 8px #ff6699; }
+        }
+
+        .sweet-name {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #c94f6e, #ff8aa7);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 8px 0;
+        }
+
+        .emotional-message {
+            background: rgba(255, 245, 250, 0.9);
+            border-radius: 60px;
+            padding: 18px 22px;
+            margin: 18px 0 12px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #a13e58;
+            font-weight: 600;
+            border-left: 8px solid #ff99bb;
+            text-align: center;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .emotional-message span {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #e85d8b;
+        }
+
+        /* 图片轮播区 (情侣照/回忆) */
+        .carousel-love {
+            margin: 20px 0 20px;
+            border-radius: 56px;
+            background: rgba(255, 235, 245, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 16px 12px;
+        }
+
+        .carousel-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #c34e72;
+            background: #fff0e0aa;
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            border-radius: 48px;
+            overflow: hidden;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.15);
+            background: #ffeef4;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            will-change: transform;
+        }
+
+        .slide {
+            flex: 0 0 100%;
+            aspect-ratio: 16 / 9;
+            background: #ffdee8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 40px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 215, 225, 0.85);
+            backdrop-filter: blur(8px);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #b14a6b;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .slider-btn:hover { background: #ffbfd0; transform: translateY(-50%) scale(1.05);}
+        .btn-prev { left: 12px; }
+        .btn-next { right: 12px; }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #e2a1bc;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.2s;
+        }
+        .dot.active {
+            background-color: #ff6f91;
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* 互动区情绪按钮 */
+        .emotion-buttons {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0 18px;
+        }
+        .btn-love {
+            border: none;
+            background: linear-gradient(115deg, #ff9eb5, #ff7a9e);
+            padding: 12px 26px;
+            border-radius: 50px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 8px 16px rgba(179, 73, 99, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-love:hover {
+            transform: translateY(-4px);
+            filter: brightness(1.02);
+            box-shadow: 0 15px 22px rgba(179, 73, 99, 0.4);
+        }
+        .btn-outline {
+            background: rgba(255, 230, 240, 0.9);
+            color: #c24a6e;
+            backdrop-filter: blur(8px);
+            border: 1px solid #ffb7c5;
+        }
+
+        /* 手写情书便签 */
+        .love-letter {
+            background: #fff7f0e6;
+            border-radius: 48px;
+            padding: 22px 20px;
+            margin: 22px 0 18px;
+            text-align: left;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            color: #9b3b55;
+            border: 1px solid #ffcddf;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .love-letter p {
+            margin: 12px 0;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+        .love-letter .signature {
+            text-align: right;
+            font-size: 1.3rem;
+            margin-top: 12px;
+            color: #d45c7a;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #bc7893;
+            background: rgba(255, 240, 245, 0.6);
+            border-radius: 40px;
+            padding: 8px 20px;
+            display: inline-block;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #fff0dd;
+            color: #dc6d92;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            z-index: 200;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            white-space: nowrap;
+        }
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        @media (max-width: 550px) {
+            .love-card { padding: 1.5rem 1.2rem 2rem; }
+            .main-love-title { font-size: 2.1rem; }
+            .to-sept { font-size: 1.6rem; }
+            .sweet-name { font-size: 1.6rem; }
+            .emotional-message { font-size: 0.95rem; }
+            .btn-love { padding: 8px 18px; font-size: 0.85rem; }
+            .slider-btn { width: 36px; height: 36px; font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="floating-love" id="loveFloat"></div>
+
+<div class="love-card">
+    <div class="to-sept">💌 To 我的九月 💌</div>
+    <div class="main-love-title">
+        <span class="heartbeat">❤️</span> 六一快乐 · 我的小女孩 <span class="heartbeat">❤️</span>
+    </div>
+    <div class="sweet-name">✨ 九月 · 全世界最值得被宠的小朋友 ✨</div>
+
+    <!-- 走心情话 -->
+    <div class="emotional-message">
+        <span>🌸 九月，你就是我想一直宠到大的小朋友 🌸</span><br>
+        今天六一，我不想祝你长大，只想祝你永远天真、永远做我的宝贝。<br>
+        愿你的每一天都有糖果般的笑容，每一次眨眼都闪着星星💫
+    </div>
+
+    <!-- 轮播区 (你可以放属于你们的回忆照片) -->
+    <div class="carousel-love">
+        <div class="carousel-title">📸 我们的甜蜜时光 · 专属回忆轮播 📸</div>
+        <div class="slider-wrapper">
+            <div class="slider" id="loveSlider"></div>
+            <button class="slider-btn btn-prev" id="prevSlideBtn">‹</button>
+            <button class="slider-btn btn-next" id="nextSlideBtn">›</button>
+        </div>
+        <div class="dots" id="dotContainer"></div>
+        <div style="font-size: 0.7rem; margin-top: 8px; color:#bf6f8a;">❤️ 九月&我 的美好瞬间 (可替换成你们的照片) ❤️</div>
+    </div>
+
+    <!-- 超甜互动按钮区 -->
+    <div class="emotion-buttons">
+        <button class="btn-love" id="sweetWordsBtn">🍭 说句情话给你听 🍭</button>
+        <button class="btn-love btn-outline" id="heartRainBtn">💖 为你下一场心动雨 💖</button>
+        <button class="btn-love" id="candyBlastBtn">🎁 专属糖果礼花 🎁</button>
+    </div>
+
+    <!-- 手写风格情书区，情绪拉满 -->
+    <div class="love-letter">
+        <p>💕 亲爱的九月：</p>
+        <p>  今天是你专属的儿童节，我想对你说——<br>
+          在我这里，你永远不用长大，可以撒娇、可以任性，可以像个小朋友一样收礼物、吃糖果、做甜甜的梦。<br>
+          你是我心里最柔软的那一部分，也是我所有浪漫的终点。<br>
+          谢谢你做我的女孩，让我有机会宠你、爱你、陪你过每一个六一。<br>
+          九月，儿童节快乐！愿你一直被这个世界温柔以待，更被我捧在手心。</p>
+        <div class="signature">—— 永远爱你的那个他 ❤️</div>
+    </div>
+
+    <div class="footer">
+        🎀 想把全世界的美好都给你，因为你值得 🎀
+    </div>
+</div>
+
+<div id="toastMsg" class="toast-msg">💗 九月，六一快乐 💗</div>
+
+<script>
+    (function() {
+        // ========== 1. 漂浮爱心与小元素 ==========
+        const loveIcons = ['❤️', '💖', '💗', '💓', '🌸', '🎀', '🦄', '🍭', '✨', '🌟', '💕', '💞'];
+        const floatContainer = document.getElementById('loveFloat');
+        for (let i = 0; i < 45; i++) {
+            const item = document.createElement('div');
+            item.classList.add('love-obj');
+            item.textContent = loveIcons[Math.floor(Math.random() * loveIcons.length)];
+            const size = 1.2 + Math.random() * 2.2;
+            item.style.fontSize = size + 'rem';
+            item.style.left = Math.random() * 95 + '%';
+            item.style.top = Math.random() * 90 + '%';
+            item.style.animationDuration = 10 + Math.random() * 15 + 's';
+            item.style.animationDelay = Math.random() * 8 + 's';
+            item.style.opacity = 0.5 + Math.random() * 0.4;
+            floatContainer.appendChild(item);
+        }
+
+        // ========== 2. 图片轮播 (可自定义图片数组) ==========
+        // 在这里替换成你和九月的合照链接，尽情甜蜜～ 建议放可爱/情侣照片
+        // 以下示例是一些甜美placeholder，你可以把链接换成自己的图片地址
+        const imageList = [
+            "https://picsum.photos/id/20/800/450",   // 可替换为你和九月的合照1
+            "https://picsum.photos/id/96/800/450",   // 可替换为合照2
+            "https://picsum.photos/id/169/800/450",  // 可替换为合照3
+            "https://picsum.photos/id/42/800/450",   // 可替换为合照4
+            "https://picsum.photos/id/26/800/450"    // 合照5
+        ];
+        // 提示: 修改上面数组中的链接为你自己的图片URL即可，支持 jpg/png等。
+        
+        let currentIdx = 0;
+        let autoInterval;
+        const sliderDiv = document.getElementById('loveSlider');
+        const dotsDiv = document.getElementById('dotContainer');
+        const prev = document.getElementById('prevSlideBtn');
+        const next = document.getElementById('nextSlideBtn');
+
+        function renderSlider() {
+            sliderDiv.innerHTML = '';
+            imageList.forEach((src, idx) => {
+                const slide = document.createElement('div');
+                slide.classList.add('slide');
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `甜蜜回忆${idx+1}`;
+                slide.appendChild(img);
+                sliderDiv.appendChild(slide);
+            });
+            dotsDiv.innerHTML = '';
+            imageList.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (idx === currentIdx) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(idx));
+                dotsDiv.appendChild(dot);
+            });
+            updateTransform();
+        }
+
+        function updateTransform() {
+            sliderDiv.style.transform = `translateX(-${currentIdx * 100}%)`;
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                if (i === currentIdx) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+        }
+
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= imageList.length) index = imageList.length - 1;
+            if (index === currentIdx) return;
+            currentIdx = index;
+            updateTransform();
+            resetAutoPlay();
+        }
+
+        function nextSlide() { let newIdx = (currentIdx + 1) % imageList.length; goToSlide(newIdx); }
+        function prevSlide() { let newIdx = (currentIdx - 1 + imageList.length) % imageList.length; goToSlide(newIdx); }
+        function startAutoPlay() { if (autoInterval) clearInterval(autoInterval); if (imageList.length > 1) autoInterval = setInterval(nextSlide, 3800); }
+        function resetAutoPlay() { if (autoInterval) clearInterval(autoInterval); startAutoPlay(); }
+
+        if (imageList.length) {
+            renderSlider();
+            startAutoPlay();
+            prev.addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
+            next.addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
+            // 触摸滑动
+            let touchX = 0;
+            const wrap = document.querySelector('.slider-wrapper');
+            wrap.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].screenX; });
+            wrap.addEventListener('touchend', (e) => {
+                let diff = e.changedTouches[0].screenX - touchX;
+                if (Math.abs(diff) > 40) {
+                    if (diff > 0) prevSlide();
+                    else nextSlide();
+                    resetAutoPlay();
+                }
+            });
+        } else {
+            sliderDiv.innerHTML = '<div class="slide" style="justify-content:center; align-items:center;">💕 九月，准备我们的回忆照片吧 💕</div>';
+        }
+
+        // ========== 3. 情绪互动 + 礼花特效 ==========
+        const toastEl = document.getElementById('toastMsg');
+        let toastTimer = null;
+        function showToast(msg, duration = 2200) {
+            toastEl.textContent = msg;
+            toastEl.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toastEl.classList.remove('show'), duration);
+        }
+
+        // 豪华心形彩带 + 糖果
+        function heartConfetti(big = true) {
+            if (big) {
+                canvasConfetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, startVelocity: 22, colors: ['#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'] });
+                canvasConfetti({ particleCount: 100, angle: 70, spread: 60, origin: { x: 0.1, y: 0.7 }, startVelocity: 26 });
+                canvasConfetti({ particleCount: 100, angle: 110, spread: 60, origin: { x: 0.9, y: 0.7 }, startVelocity: 26 });
+                setTimeout(() => {
+                    canvasConfetti({ particleCount: 300, spread: 120, origin: { y: 0.5 }, startVelocity: 18, colors: ['#FF6F91', '#FFB347', '#FF85A1', '#FFC3A0'] });
+                }, 200);
+            } else {
+                canvasConfetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, startVelocity: 18, colors: ['#FFB7C5', '#FFD966', '#FF9AA2'] });
+            }
+        }
+
+        // 心动雨 (粉色+爱心形状)
+        function heartRain() {
+            const duration = 1800;
+            const end = Date.now() + duration;
+            const colors = ['#ff6f91', '#ffb3c6', '#ff8aa7', '#ffb347'];
+            (function frame() {
+                canvasConfetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0, y: 0.6 }, startVelocity: 18, colors: colors });
+                canvasConfetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, startVelocity: 18, colors: colors });
+                canvasConfetti({ particleCount: 8, spread: 60, origin: { x: Math.random(), y: Math.random() * 0.5 }, startVelocity: 20, colors: colors, shapes: ['heart'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            })();
+            showToast("💘 九月，心动信号满格！我爱你 💘", 2300);
+        }
+
+        function candyBlast() {
+            heartConfetti(true);
+            showToast("🍬✨ 九月专属糖果礼花，甜份爆表 ✨🍬", 2000);
+        }
+
+        // 甜言蜜语库 (高情绪价值)
+        const sweetTalk = [
+            "💕 九月，你是我重复爱上的人间理想。",
+            "🍭 宝贝，儿童节快乐！我想和你过一辈子的六一。",
+            "🌸 九月小朋友，请收下我永不过期的宠爱。",
+            "✨ 和你在一起，每一天都是糖分超标的节日。",
+            "💖 全世界都在催你长大，只有我想让你做我的小朋友。",
+            "🎈 九月，你一笑我的整个世界都甜度满分。",
+            "🌟 你是我心里永远长不大的小女孩，六一快乐。",
+            "💗 报告九月：你的专属骑士申请宠你一辈子。",
+            "🎀 知道为什么六一这么甜吗？因为有你当我的女朋友。",
+            "🍬 我的九月，愿你永远天真，永远被爱包围。"
+        ];
+        function randomSweet() {
+            const msg = sweetTalk[Math.floor(Math.random() * sweetTalk.length)];
+            showToast(msg, 2500);
+            // 同时小礼花助兴
+            canvasConfetti({ particleCount: 50, spread: 45, origin: { y: 0.8 }, colors: ['#FFB7C5', '#FFC3A0', '#FFD966'], startVelocity: 12 });
+            // 并且在情书区域闪现一句话，增强情绪
+            const letterDiv = document.querySelector('.love-letter');
+            const flashMsg = document.createElement('p');
+            flashMsg.style.background = "#ffebf0";
+            flashMsg.style.borderRadius = "30px";
+            flashMsg.style.padding = "8px";
+            flashMsg.style.margin = "6px 0";
+            flashMsg.style.fontSize = "1rem";
+            flashMsg.style.fontFamily = "'Quicksand', sans-serif";
+            flashMsg.style.animation = "fadeInOut 1.8s";
+            flashMsg.innerHTML = `✨ 九月专属小情书：${msg.slice(0, 38)} ✨`;
+            letterDiv.appendChild(flashMsg);
+            setTimeout(() => flashMsg.remove(), 2300);
+        }
+
+        // 绑定按钮
+        document.getElementById('sweetWordsBtn').addEventListener('click', randomSweet);
+        document.getElementById('heartRainBtn').addEventListener('click', heartRain);
+        document.getElementById('candyBlastBtn').addEventListener('click', candyBlast);
+
+        // 额外点击卡片产生小爱心
+        const card = document.querySelector('.love-card');
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-love') || e.target.closest('.slider-btn') || e.target.closest('.dot')) return;
+            canvasConfetti({ particleCount: 15, spread: 30, origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }, colors: ['#ff99bb', '#ffb7c5'] });
+        });
+
+        // 页面加载欢迎特效
+        window.addEventListener('load', () => {
+            canvasConfetti({ particleCount: 80, spread: 55, origin: { y: 0.7 }, startVelocity: 14, colors: ['#ffb7c5', '#ffd9e5', '#ff9eb5'] });
+            setTimeout(() => {
+                canvasConfetti({ particleCount: 60, spread: 45, origin: { x: 0.3, y: 0.6 } });
+                canvasConfetti({ particleCount: 60, spread: 45, origin: { x: 0.7, y: 0.6 } });
+            }, 300);
+            showToast("💗 给九月的专属惊喜，儿童节超级快乐 💗", 3000);
+        });
+
+        // 标题心跳特效
+        const loveTitle = document.querySelector('.main-love-title');
+        if(loveTitle) {
+            setInterval(() => {
+                loveTitle.style.transform = "scale(1.01)";
+                setTimeout(() => { if(loveTitle) loveTitle.style.transform = ""; }, 300);
+            }, 1800);
+        }
+    })();
+</script>
+</body>
+</html>
