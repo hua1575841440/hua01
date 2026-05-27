@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>🌸 祝姐姐六一快乐 · 永远是我的少女 🌸</title>
-    <!-- canvas-confetti 彩带库 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-    <!-- 可爱字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Fredoka+One&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -25,7 +23,7 @@
             cursor: default;
         }
 
-        /* 漂浮元素：星星、糖果、小花 */
+        /* 漂浮元素 */
         .floating-joy {
             position: fixed;
             top: 0;
@@ -56,7 +54,7 @@
         .float-item.slow { animation-duration: 22s; }
         .float-item.fast { animation-duration: 12s; }
 
-        /* 主卡片 柔和梦境质感 */
+        /* 主卡片 */
         .sister-card {
             position: relative;
             z-index: 20;
@@ -71,6 +69,7 @@
             text-align: center;
             transition: all 0.3s ease;
             animation: cardFloatIn 0.6s ease-out;
+            overflow: visible;
         }
 
         @keyframes cardFloatIn {
@@ -78,7 +77,6 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* 标题区域 */
         .to-sister {
             font-family: 'Dancing Script', cursive;
             font-size: 2.5rem;
@@ -126,13 +124,14 @@
             box-shadow: 0 6px 14px rgba(0,0,0,0.05);
         }
 
-        /* 图片轮播区 (姐姐的回忆相册) */
+        /* 轮播区 - 完全修复竖图裁剪 + 文字完整显示 */
         .photo-carousel {
             margin: 20px 0 22px;
             border-radius: 56px;
             background: rgba(255, 240, 245, 0.7);
             backdrop-filter: blur(4px);
-            padding: 16px 12px;
+            padding: 16px 12px 24px 12px;
+            overflow: visible;
         }
 
         .carousel-label {
@@ -161,7 +160,8 @@
 
         .slide {
             flex: 0 0 100%;
-            aspect-ratio: 16 / 9;
+            /* 移除固定比例，让高度根据图片自适应，同时保证容器有最小高度 */
+            min-height: 280px;
             background: #f7dfea;
             display: flex;
             align-items: center;
@@ -170,9 +170,11 @@
 
         .slide img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;           /* 让高度自适应，不裁剪 */
+            max-height: 460px;     /* 限制最大高度，避免过于高 */
+            object-fit: contain;    /* 完整显示图片，不裁剪 */
             border-radius: 40px;
+            display: block;
         }
 
         .slider-btn {
@@ -205,6 +207,7 @@
             justify-content: center;
             gap: 12px;
             margin-top: 16px;
+            margin-bottom: 12px;
         }
         .dot {
             width: 12px;
@@ -221,7 +224,18 @@
             transform: scale(1.2);
         }
 
-        /* 互动区：可爱按钮 */
+        /* 提示文字完整显示 */
+        .photo-carousel > div:last-of-type {
+            margin-top: 12px;
+            margin-bottom: 6px;
+            font-size: 0.7rem;
+            color: #b27792;
+            text-align: center;
+            line-height: 1.4;
+            white-space: normal;
+            word-break: break-word;
+        }
+
         .action-group {
             display: flex;
             gap: 18px;
@@ -254,7 +268,6 @@
             background: linear-gradient(115deg, #b3a0d4, #d9a7c7);
         }
 
-        /* 手写信风格区域 */
         .handwritten {
             background: #fffaf3e6;
             border-radius: 56px;
@@ -319,6 +332,20 @@
             .sister-name { font-size: 1.4rem; }
             .btn-sister { padding: 8px 18px; font-size: 0.85rem; }
             .slider-btn { width: 36px; height: 36px; font-size: 1.5rem; }
+            .photo-carousel {
+                padding: 12px 10px 20px 10px;
+            }
+            .dots {
+                margin-bottom: 10px;
+                gap: 10px;
+            }
+            .photo-carousel > div:last-of-type {
+                font-size: 0.65rem;
+                margin-top: 8px;
+            }
+            .slide img {
+                max-height: 340px;
+            }
         }
     </style>
 </head>
@@ -331,14 +358,12 @@
     <div class="main-title">🍭 六一儿童节快乐 🍭</div>
     <div class="sister-name">✨ 姐姐 · 永远是我的少女 ✨</div>
 
-    <!-- 温情祝福语 -->
     <div class="bless-message">
         🌸 亲爱的姐姐，六一快乐！<br>
         虽然你已经长大，但在我心里你永远是那个会保护我、陪我笑的少女。<br>
         愿你今天像孩子一样无忧无虑，吃甜甜的糖，做最可爱的梦。💖
     </div>
 
-    <!-- 轮播相册区（可换成姐姐的照片） -->
     <div class="photo-carousel">
         <div class="carousel-label">📸 姐姐的专属回忆 · 时光放映机 📸</div>
         <div class="slider-wrapper">
@@ -347,17 +372,15 @@
             <button class="slider-btn btn-next" id="nextSlideBtn">›</button>
         </div>
         <div class="dots" id="dotContainer"></div>
-        <div style="font-size: 0.7rem; margin-top: 8px; color:#b27792;">❤️ 姐姐，把这些美好的瞬间都收藏起来吧 ❤️</div>
+        <div>❤️ 姐姐，把这些美好的瞬间都收藏起来吧 ❤️</div>
     </div>
 
-    <!-- 互动按钮 给足情绪价值 -->
     <div class="action-group">
         <button class="btn-sister" id="warmMsgBtn">🍬 想对姐姐说的话 🍬</button>
         <button class="btn-sister btn-soft" id="flowerRainBtn">🌸 下一场花瓣雨 🌸</button>
         <button class="btn-sister" id="candyCelebrateBtn">🎁 糖果彩虹礼花 🎁</button>
     </div>
 
-    <!-- 手写信风格专区 -->
     <div class="handwritten">
         <p>💕 给最棒的姐姐：</p>
         <p>  小时候你牵着我的手，给我买糖、替我遮风挡雨；现在换我来宠你，让你永远做开心的小朋友。<br>
@@ -376,7 +399,7 @@
 
 <script>
     (function() {
-        // ========== 1. 漂浮可爱元素 ==========
+        // 漂浮元素
         const floatIcons = ['🌸', '🌼', '🍬', '🍭', '🎈', '💗', '✨', '🌟', '🦋', '🐰', '🎀', '💖', '🍰', '☁️'];
         const floatContainer = document.getElementById('floatingWorld');
         for (let i = 0; i < 52; i++) {
@@ -394,16 +417,22 @@
             floatContainer.appendChild(item);
         }
 
-        // ========== 2. 图片轮播 可自定义（可替换成姐姐的照片）==========
-        // 在这里换上你姐姐的相册图片链接，表达你的心意
+        // 图片列表 – 支持远程图床或本地路径，如果图片加载失败会自动显示占位符
         const imageArray = [
-            "https://picsum.photos/id/20/800/450",   // 温馨场景示例 -> 可替换
-            "https://picsum.photos/id/96/800/450",   // 风景示例 -> 可替换
-            "https://picsum.photos/id/169/800/450",  // 替换为姐姐照片1
-            "https://picsum.photos/id/26/800/450",   // 替换为姐姐照片2
-            "https://picsum.photos/id/42/800/450"    // 替换为姐姐照片3
+            "img/sister01.jpg",
+            "img/sister02.jpg", 
+            "img/sister03.jpg",
+            "img/sister04.jpg", 
+            "img/sister05.jpg",
+            "img/sister06.jpg", 
+            "img/sister07.jpg",
         ];
-        // 建议将上面链接换成你姐姐真实的照片链接（上传到图床），给她惊喜！
+
+        // 为每个图片添加错误处理，避免叉号
+        function handleImageError(img) {
+            img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23fcd5e7'/%3E%3Ctext x='50%25' y='50%25' font-size='18' fill='%23b24c6d' text-anchor='middle' dy='.3em'%3E🌸 照片加载中%3C/text%3E%3C/svg%3E";
+            img.style.objectFit = "contain";
+        }
 
         let currentIdx = 0;
         let autoTimer;
@@ -420,6 +449,7 @@
                 const img = document.createElement('img');
                 img.src = src;
                 img.alt = `姐姐的回忆${i+1}`;
+                img.onerror = function() { handleImageError(this); };
                 slide.appendChild(img);
                 sliderDiv.appendChild(slide);
             });
@@ -461,7 +491,6 @@
             startAutoPlay();
             prevBtn.addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
             nextBtn.addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
-            // 触摸滑动
             let startX = 0;
             const wrap = document.querySelector('.slider-wrapper');
             wrap.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].screenX; });
@@ -477,7 +506,7 @@
             sliderDiv.innerHTML = '<div class="slide" style="justify-content:center; align-items:center;">💕 姐姐，添加我们的回忆照片吧 💕</div>';
         }
 
-        // ========== 3. 互动特效 + 情绪价值 ==========
+        // 互动特效
         const toast = document.getElementById('toastMsg');
         let toastTimeout = null;
         function showToast(msg, duration = 2200) {
@@ -487,7 +516,6 @@
             toastTimeout = setTimeout(() => toast.classList.remove('show'), duration);
         }
 
-        // 花瓣雨/礼花组合
         function petalRain() {
             canvasConfetti({ particleCount: 180, spread: 85, origin: { y: 0.6 }, startVelocity: 20, colors: ['#FFB7C5', '#FFC8DD', '#FBC8B5', '#FFDAB9', '#E2F0CB'], shapes: ['circle'] });
             canvasConfetti({ particleCount: 120, angle: 70, spread: 60, origin: { x: 0.1, y: 0.7 }, startVelocity: 22, colors: ['#FF9AA2', '#FFB347'] });
@@ -505,7 +533,6 @@
             showToast("🍬✨ 给姐姐的糖果彩虹雨，甜度满分 ✨🍭", 2300);
         }
 
-        // 温馨语录库
         const sisterMessages = [
             "💗 姐姐，你是我生命里最温暖的光，六一快乐！",
             "🌸 愿我的姐姐永远像孩子一样被宠爱，每一天都甜滋滋～",
@@ -519,9 +546,7 @@
         function showWarmMessage() {
             const msg = sisterMessages[Math.floor(Math.random() * sisterMessages.length)];
             showToast(msg, 2700);
-            // 在小礼花配合
             canvasConfetti({ particleCount: 55, spread: 50, origin: { y: 0.8 }, colors: ['#FFB7C5', '#FFC8DD', '#FFDAB9'], startVelocity: 10 });
-            // 同时在手写信区域闪现一句温馨
             const letterDiv = document.querySelector('.handwritten');
             const flash = document.createElement('p');
             flash.style.background = "#ffecf0";
@@ -530,25 +555,21 @@
             flash.style.margin = "8px 0";
             flash.style.fontSize = "1rem";
             flash.style.fontFamily = "'Quicksand', sans-serif";
-            flash.style.animation = "fadeInOut 2s";
             flash.innerHTML = `✨ 姐姐专属：${msg.slice(0, 42)} ✨`;
             letterDiv.appendChild(flash);
             setTimeout(() => flash.remove(), 2400);
         }
 
-        // 绑定按钮
         document.getElementById('warmMsgBtn').addEventListener('click', showWarmMessage);
         document.getElementById('flowerRainBtn').addEventListener('click', petalRain);
         document.getElementById('candyCelebrateBtn').addEventListener('click', candyCelebration);
 
-        // 额外：点击卡片任意处飘一点小心心（不干扰按钮）
         const card = document.querySelector('.sister-card');
         card.addEventListener('click', (e) => {
             if (e.target.closest('.btn-sister') || e.target.closest('.slider-btn') || e.target.closest('.dot')) return;
             canvasConfetti({ particleCount: 18, spread: 35, origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }, colors: ['#ff9eb5', '#ffc8dd', '#ffb7c5'] });
         });
 
-        // 页面加载欢迎特效
         window.addEventListener('load', () => {
             canvasConfetti({ particleCount: 80, spread: 55, origin: { y: 0.7 }, startVelocity: 14, colors: ['#ffb7c5', '#ffd9e5', '#ff9eb5'] });
             setTimeout(() => {
@@ -558,7 +579,6 @@
             showToast("💕 姐姐，欢迎来到为你准备的六一乐园 💕", 3200);
         });
 
-        // 标题微微呼吸
         const mainTitle = document.querySelector('.main-title');
         if(mainTitle) {
             setInterval(() => {
